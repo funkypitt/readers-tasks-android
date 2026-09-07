@@ -131,7 +131,7 @@ fun TextRow(
 
 /** Title line at the top of a screen. Tapping it goes back. */
 @Composable
-fun ScreenTitle(title: String, onBack: (() -> Unit)?, trailing: String? = null, onTrailing: (() -> Unit)? = null) {
+fun ScreenTitle(title: String, onBack: (() -> Unit)?, trailing: String? = null, onTrailing: (() -> Unit)? = null, onTitle: (() -> Unit)? = null) {
     val colors = LocalColors.current
     Row(
         Modifier
@@ -141,7 +141,10 @@ fun ScreenTitle(title: String, onBack: (() -> Unit)?, trailing: String? = null, 
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            Modifier.weight(1f).then(if (onBack != null) Modifier.noRippleClickable(onClick = onBack) else Modifier),
+            Modifier.weight(1f).then(
+                if (onBack != null) Modifier.noRippleClickable(onClick = onBack)
+                else if (onTitle != null) Modifier.noRippleClickable(onClick = onTitle) else Modifier
+            ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (onBack != null) {

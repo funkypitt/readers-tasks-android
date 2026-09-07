@@ -33,6 +33,7 @@ data class TaskRow(val href: String, val etag: String? = null, val ics: String) 
     val created: String get() = VTodo.prop(lines, "CREATED") ?: VTodo.prop(lines, "DTSTAMP") ?: ""
     val completedAt: String get() = VTodo.prop(lines, "COMPLETED") ?: ""
     val isSubtask: Boolean get() = lines.any { it.uppercase().startsWith("RELATED-TO") && "RELTYPE=CHILD" !in it.uppercase() }
+    val sortOrder: Long? get() = VTodo.prop(lines, "X-APPLE-SORT-ORDER")?.trim()?.toLongOrNull()
 }
 
 @Serializable
@@ -90,7 +91,8 @@ class Store(private val context: Context, private val prefs: Prefs) {
     fun visibleLists(): List<ListInfo> = _cache.value.lists.filter { !it.hidden }
     fun openTasks(listUrl: String): List<TaskRow> =
         (_cache.value.tasks[listUrl] ?: emptyList()).filter { !it.completed && !it.cancelled && !it.isSubtask }
-            .sortedWith(compareBy({ it.due == null }, { it.due ?: LocalDate.MAX }, { it.created }))
+            // Manual order first (X-APPLE-SORT-ORDER), then the rest by due date and creation.
+            .sortedWith(compareBy({ it.sortOrder == null }, { it.sortOrder ?: 0L }, { it.due == null }, { it.due ?: LocalDate.MAX }, { it.created }))
     fun doneTasks(listUrl: String): List<TaskRow> =
         (_cache.value.tasks[listUrl] ?: emptyList()).filter { it.completed }.sortedByDescending { it.completedAt }
 
@@ -141,6 +143,42 @@ class Store(private val context: Context, private val prefs: Prefs) {
     fun delete(listUrl: String, task: TaskRow) {
         update { c -> c.copy(tasks = c.tasks + (listUrl to (c.tasks[listUrl] ?: emptyList()).filterNot { it.href == task.href })) }
         launchSync { val c = client(); c.delete(task.href); refreshList(c, listUrl) }
+    }
+
+    /**
+     * Tasks in their wanted order → the sort values that must change. Existing values are kept
+     * when they already increase along the list; a moved task gets a value between its
+     * neighbours; when no gap is left everything is renumbered.
+     */
+    fun planSortOrders(ordered: List<TaskRow>): Map<TaskRow, Long> {
+        val values = ordered.map { it.sortOrder }
+        if (values.all { it != null } && values.zipWithNext().all { (a, b) -> a!! < b!! }) return emptyMap()
+        val changes = LinkedHashMap<TaskRow, Long>()
+        var prev: Long? = null
+        for ((i, t) in ordered.withIndex()) {
+            val next = ordered.drop(i + 1).firstOrNull { it.sortOrder != null && it !in changes }?.sortOrder
+            val v = t.sortOrder
+            if (v != null && (prev == null || v > prev) && (next == null || v < next)) { prev = v; continue }
+            val lo = prev ?: 0L
+            val hi = next ?: (lo + 2000)
+            if (hi - lo < 2) return ordered.withIndex().associate { (j, x) -> x to (j + 1) * 1000L }
+            val mid = (lo + hi) / 2
+            changes[t] = mid; prev = mid
+        }
+        return changes
+    }
+
+    /** Apply a new manual order of the open tasks of a list: local first, then the server. */
+    fun reorder(listUrl: String, ordered: List<TaskRow>) {
+        val changes = planSortOrders(ordered)
+        if (changes.isEmpty()) return
+        update { c -> c.copy(tasks = c.tasks + (listUrl to (c.tasks[listUrl] ?: emptyList()).map { row ->
+            changes[row]?.let { row.copy(ics = VTodo.withSortOrder(row.ics, it), etag = null) } ?: row })) }
+        launchSync {
+            val c = client()
+            for ((t, v) in changes) c.put(t.href, VTodo.withSortOrder(t.ics, v), t.etag, create = false)
+            refreshList(c, listUrl)
+        }
     }
 
     /** Blocking variants for the content provider (already on a binder thread). */

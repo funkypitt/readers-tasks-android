@@ -100,23 +100,32 @@ fun TasksScreen(nav: Nav, app: App) {
     Page {
         Column(Modifier.fillMaxSize()) {
             ScreenTitle(
-                title = list?.name ?: stringResource(R.string.app_name),
+                title = (list?.name ?: stringResource(R.string.app_name)) + "  ▾",
                 onBack = null,
                 trailing = "⋯",
-                onTrailing = { pageMenu = true }
+                onTrailing = { pageMenu = true },
+                onTitle = { nav.push(Screen.Lists) }
             )
             if (!settings.hasAccount) {
                 TextRow(stringResource(R.string.account_needed), size = typo.title) { nav.push(Screen.Account) }
             }
-            LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(top = 8.dp, bottom = 16.dp)) {
-                if (settings.hasAccount && open.isEmpty() && listUrl != null) {
-                    item { Small(stringResource(R.string.no_open_task), Modifier.padding(horizontal = rowPadH, vertical = rowPadV)) }
-                }
-                items(open, key = { it.href }) { t ->
+            // Open tasks: tap ☐ to complete, tap the text to rename, long press for the menu,
+            // long press then drag to put them in the order you want (saved to the server).
+            ReorderableColumn(
+                items = open,
+                key = { it.href },
+                onReorder = { ordered -> if (listUrl != null) app.store.reorder(listUrl, ordered) },
+                onLongPress = { t -> menuFor = t },
+                row = { t, _ ->
                     TaskLine(t, done = false,
                         onBox = { tick(); app.store.setCompleted(listUrl!!, t, true) },
-                        onTap = { renameFor = t },
-                        onLongPress = { tick(); menuFor = t })
+                        onTap = { renameFor = t })
+                },
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(top = 8.dp, bottom = 16.dp)
+            ) {
+                if (settings.hasAccount && open.isEmpty() && listUrl != null) {
+                    item { Small(stringResource(R.string.no_open_task), Modifier.padding(horizontal = rowPadH, vertical = rowPadV)) }
                 }
                 if (done.isNotEmpty()) {
                     item {
@@ -192,13 +201,16 @@ fun TasksScreen(nav: Nav, app: App) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun TaskLine(t: TaskRow, done: Boolean, onBox: () -> Unit, onTap: () -> Unit, onLongPress: () -> Unit) {
+private fun TaskLine(t: TaskRow, done: Boolean, onBox: () -> Unit, onTap: () -> Unit, onLongPress: (() -> Unit)? = null) {
     val colors = LocalColors.current
     val color = if (done) colors.dim else colors.fg
     Row(
         Modifier
             .fillMaxWidth()
-            .combinedClickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onTap, onLongClick = onLongPress)
+            .then(
+                if (onLongPress != null) Modifier.combinedClickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onTap, onLongClick = onLongPress)
+                else Modifier.noRippleClickable(onClick = onTap)
+            )
             .padding(horizontal = rowPadH, vertical = rowPadV * 0.7f),
         verticalAlignment = Alignment.CenterVertically
     ) {

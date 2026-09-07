@@ -7,7 +7,9 @@ Cloud, Radicale…).
 
 * One screen: the open tasks of the current list, ☐ to complete, a line to add, long press
   for rename, due tomorrow, delete. "show n done" reveals completed tasks; ☑ reopens one.
-* Lists: pick, hide, reorder (long press).
+* Tap the list name at the top to switch list. Lists: hide, reorder (long press).
+* Long press a task, then drag it to its place: the order is saved on the server as
+  X-APPLE-SORT-ORDER, so the desktop app shows the same order.
 * Same look as the launcher: white on black or black on white, serif / sans / mono, three sizes.
 * A signature-protected content provider lets Reader's Launcher read and write the lists
   without any permission prompt (both apps are signed with the same key).

@@ -77,6 +77,23 @@ object VTodo {
         return out.joinToString("\r\n") { fold(it) } + "\r\n"
     }
 
+    /** Rewrite X-APPLE-SORT-ORDER (the de facto manual-order property). */
+    fun withSortOrder(ics: String, value: Long): String {
+        val out = ArrayList<String>(); var inTodo = false
+        for (l in unfold(ics)) {
+            val u = l.uppercase(); val key = u.substringBefore(":").substringBefore(";")
+            if (u.startsWith("BEGIN:VTODO")) inTodo = true
+            if (inTodo && key in setOf("X-APPLE-SORT-ORDER", "LAST-MODIFIED", "DTSTAMP")) continue
+            if (u.startsWith("END:VTODO")) {
+                val now = utcNow()
+                out += listOf("DTSTAMP:$now", "LAST-MODIFIED:$now", "X-APPLE-SORT-ORDER:$value")
+                inTodo = false
+            }
+            out += l
+        }
+        return out.joinToString("\r\n") { fold(it) } + "\r\n"
+    }
+
     /** Rewrite SUMMARY (and DUE if given; null clears it). */
     fun withSummary(ics: String, summary: String, due: LocalDate?, keepDue: Boolean): String {
         val out = ArrayList<String>(); var inTodo = false
