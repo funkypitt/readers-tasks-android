@@ -56,4 +56,8 @@
     <string name="about">reader\'s tasks %1$s</string>
     <string name="about_line">black and white, text only. MIT licence.</string>
     <string name="search">search</string>
+    <string name="widget_line_name">Reader\'s Tasks · first task</string>
+    <string name="widget_list_name">Reader\'s Tasks · open tasks</string>
+    <string name="widget_line_desc">the first open task of the current list, a box to tick, + for a new one</string>
+    <string name="widget_list_desc">the open tasks of the current list, boxes to tick, + for a new one</string>
 </resources>

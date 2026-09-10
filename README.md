@@ -28,3 +28,9 @@ username like `AB12345`, an application password if two-factor authentication is
 Kotlin, Jetpack Compose (foundation only), kotlinx-serialization for the cache file. The
 CalDAV part is four HTTP requests (PROPFIND, REPORT, PUT, DELETE) over HttpURLConnection —
 no library. MIT.
+
+## Widgets
+
+Two standard home-screen widgets for any launcher, black and white: the first open task of the
+current list (a box to tick, + for a new one) and the open tasks as a list with boxes. Ticking a
+box completes the task on the server; + opens the app on its new-task prompt.

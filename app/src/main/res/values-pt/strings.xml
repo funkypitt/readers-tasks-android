@@ -55,4 +55,8 @@
     <string name="about">reader\'s tasks %1$s</string>
     <string name="about_line">preto e branco, só texto. Licença MIT.</string>
     <string name="search">procurar</string>
+    <string name="widget_line_name">Reader\'s Tasks · primeira tarefa</string>
+    <string name="widget_list_name">Reader\'s Tasks · tarefas em aberto</string>
+    <string name="widget_line_desc">a primeira tarefa em aberto da lista atual, uma caixa, + para adicionar</string>
+    <string name="widget_list_desc">as tarefas em aberto da lista, caixas, + para adicionar</string>
 </resources>

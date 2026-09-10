@@ -3,6 +3,7 @@ package com.freedomfighter.readerstasks
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.setValue
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,11 +23,16 @@ import com.freedomfighter.readerstasks.ui.SettingsScreen
 import com.freedomfighter.readerstasks.ui.TasksScreen
 
 class MainActivity : ComponentActivity() {
+    override fun onNewIntent(intent: android.content.Intent) { super.onNewIntent(intent); if (intent.action == com.freedomfighter.readerstasks.widget.TasksWidgets.ACTION_ADD) { (application as App).pendingAdd = true; addRequests++ } }
+    /** Bumped so the composition notices an add request arriving while the app is open. */
+    var addRequests by androidx.compose.runtime.mutableIntStateOf(0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         val app = application as App
+        if (intent?.action == com.freedomfighter.readerstasks.widget.TasksWidgets.ACTION_ADD) (application as App).pendingAdd = true
         setContent {
             val settings by app.prefs.settings.collectAsState()
             val nav = remember { Nav() }

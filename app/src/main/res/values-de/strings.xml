@@ -55,4 +55,8 @@
     <string name="about">reader\'s tasks %1$s</string>
     <string name="about_line">schwarz-weiß, nur Text. MIT-Lizenz.</string>
     <string name="search">suchen</string>
+    <string name="widget_line_name">Reader\'s Tasks · erste Aufgabe</string>
+    <string name="widget_list_name">Reader\'s Tasks · offene Aufgaben</string>
+    <string name="widget_line_desc">die erste offene Aufgabe der aktuellen Liste, ein Kästchen, + für eine neue</string>
+    <string name="widget_list_desc">die offenen Aufgaben der Liste, Kästchen, + für eine neue</string>
 </resources>

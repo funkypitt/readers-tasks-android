@@ -91,6 +91,8 @@ fun TasksScreen(nav: Nav, app: App) {
     val done = if (listUrl != null) app.store.doneTasks(listUrl) else emptyList()
     var showDone by remember { mutableStateOf(false) }
     var adding by remember { mutableStateOf(false) }
+    val activity = LocalContext.current as? com.freedomfighter.readerstasks.MainActivity
+    LaunchedEffect(activity?.addRequests) { if (app.pendingAdd) { app.pendingAdd = false; adding = true } }
     var menuFor by remember { mutableStateOf<TaskRow?>(null) }
     var renameFor by remember { mutableStateOf<TaskRow?>(null) }
     var pageMenu by remember { mutableStateOf(false) }

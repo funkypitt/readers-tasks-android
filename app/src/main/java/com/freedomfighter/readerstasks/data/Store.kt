@@ -78,6 +78,7 @@ class Store(private val context: Context, private val prefs: Prefs) {
         val next = transform(_cache.value)
         if (next == _cache.value) return
         _cache.value = next
+        runCatching { com.freedomfighter.readerstasks.widget.TasksWidgets.refresh(context) }
         runCatching { file.writeText(json.encodeToString(Cache.serializer(), next)) }
         onChanged()
     }

@@ -55,4 +55,8 @@
     <string name="about">reader\'s tasks %1$s</string>
     <string name="about_line">чёрно-белое, только текст. Лицензия MIT.</string>
     <string name="search">поиск</string>
+    <string name="widget_line_name">Reader\'s Tasks · первая задача</string>
+    <string name="widget_list_name">Reader\'s Tasks · открытые задачи</string>
+    <string name="widget_line_desc">первая открытая задача текущего списка, галочка, + для новой</string>
+    <string name="widget_list_desc">открытые задачи списка, галочки, + для новой</string>
 </resources>
