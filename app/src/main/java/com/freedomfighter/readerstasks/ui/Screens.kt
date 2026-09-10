@@ -291,6 +291,7 @@ fun SettingsScreen(nav: Nav, app: App) {
                 TextRow(stringResource(R.string.setting_haptics, if (s.haptics) stringResource(R.string.on) else stringResource(R.string.off)), size = typo.title) { app.prefs.setHaptics(!s.haptics) }
                 Rule(Modifier.padding(vertical = 8.dp))
                 TextRow(stringResource(R.string.about, com.freedomfighter.readerstasks.BuildConfig.VERSION_NAME), size = typo.title, secondary = stringResource(R.string.about_line)) { }
+                TextRow(stringResource(R.string.credits), size = typo.title) { }
             }
         }
     }

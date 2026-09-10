@@ -34,3 +34,11 @@ no library. MIT.
 Two standard home-screen widgets for any launcher, black and white: the first open task of the
 current list (a box to tick, + for a new one) and the open tasks as a list with boxes. Ticking a
 box completes the task on the server; + opens the app on its new-task prompt.
+
+## Crédits / Credits
+
+© 2026 Pierre Gallaz. Développé avec [Claude Code](https://claude.com/claude-code) (Anthropic).
+Licence MIT, voir `LICENSE`.
+
+© 2026 Pierre Gallaz. Developed with [Claude Code](https://claude.com/claude-code) (Anthropic).
+MIT licence, see `LICENSE`.

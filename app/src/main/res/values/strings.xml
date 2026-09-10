@@ -55,6 +55,7 @@
     <string name="off">off</string>
     <string name="about">reader\'s tasks %1$s</string>
     <string name="about_line">black and white, text only. MIT licence.</string>
+    <string name="credits">Pierre Gallaz · developed with Claude Code</string>
     <string name="search">search</string>
     <string name="widget_line_name">Reader\'s Tasks · first task</string>
     <string name="widget_list_name">Reader\'s Tasks · open tasks</string>

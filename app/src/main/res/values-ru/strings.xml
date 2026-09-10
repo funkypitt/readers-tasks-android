@@ -54,6 +54,7 @@
     <string name="off">выкл</string>
     <string name="about">reader\'s tasks %1$s</string>
     <string name="about_line">чёрно-белое, только текст. Лицензия MIT.</string>
+    <string name="credits">Pierre Gallaz · разработано с Claude Code</string>
     <string name="search">поиск</string>
     <string name="widget_line_name">Reader\'s Tasks · первая задача</string>
     <string name="widget_list_name">Reader\'s Tasks · открытые задачи</string>

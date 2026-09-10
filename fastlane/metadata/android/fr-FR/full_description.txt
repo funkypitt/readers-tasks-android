@@ -1,0 +1,14 @@
+Un client noir et blanc, texte seulement, pour les listes de tâches CalDAV (Infomaniak, Nextcloud, Tasks.org Cloud, Radicale…), pensé pour les téléphones e-ink et pour qui veut une liste de mots et rien d'autre. Pas d'icônes, pas de couleurs : blanc sur noir ou noir sur blanc, serif, sans ou mono, trois tailles de texte. Fait partie de la famille Reader's et application de tâches derrière la tuile tâches de Reader's Launcher ; le jumeau Android du client de bureau Reader's Tasks.
+
+• Un écran : les tâches ouvertes de la liste courante, ☐ pour terminer, une ligne pour ajouter, un appui long pour renommer, reporter à demain, supprimer. « voir n terminées » révèle les tâches faites ; ☑ en rouvre une.
+• Un tap sur le nom de la liste en haut pour changer de liste. Listes : masquer, réordonner.
+• Un appui long sur une tâche, puis la glisser à sa place : l'ordre est enregistré sur le serveur (X-APPLE-SORT-ORDER), l'application de bureau montre donc le même ordre.
+• Compte : serveur, nom d'utilisateur, mot de passe d'application. Infomaniak : https://sync.infomaniak.com, un mot de passe d'application si la double authentification est activée.
+• La partie CalDAV tient en quatre requêtes HTTP (PROPFIND, REPORT, PUT, DELETE), sans bibliothèque.
+• Un fournisseur de contenu protégé par signature permet à Reader's Launcher de lire et d'écrire les listes sans aucune demande de permission.
+
+Deux widgets standard pour n'importe quel lanceur : la première tâche ouverte de la liste courante (une case à cocher, + pour en créer une) et les tâches ouvertes en liste avec leurs cases. Cocher une case termine la tâche sur le serveur.
+
+Pas de compte ailleurs que sur votre propre serveur, pas de pistage. Anglais, français, allemand, espagnol, portugais, russe. Logiciel libre, licence MIT.
+
+Pierre Gallaz · développé avec Claude Code

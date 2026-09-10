@@ -1,0 +1,14 @@
+A black-and-white, text-only client for CalDAV task lists (Infomaniak, Nextcloud, Tasks.org Cloud, Radicale…), made for e-ink phones and for anyone who wants a list of words and nothing else. No icons, no colours: white on black or black on white, serif, sans or mono, three text sizes. Part of the Reader's family of apps and the task app behind the tasks tile of Reader's Launcher; the Android twin of the Reader's Tasks desktop client.
+
+• One screen: the open tasks of the current list, ☐ to complete, a line to add, long press for rename, due tomorrow, delete. "show n done" reveals completed tasks; ☑ reopens one.
+• Tap the list name at the top to switch list. Lists: hide, reorder.
+• Long press a task, then drag it to its place: the order is saved on the server (X-APPLE-SORT-ORDER), so the desktop app shows the same order.
+• Account: server, username, app password. Infomaniak: https://sync.infomaniak.com, an application password if two-factor authentication is on.
+• The CalDAV part is four HTTP requests (PROPFIND, REPORT, PUT, DELETE), no library.
+• A signature-protected content provider lets Reader's Launcher read and write the lists without any permission prompt.
+
+Two standard home-screen widgets for any launcher: the first open task of the current list (a box to tick, + for a new one) and the open tasks as a list with boxes. Ticking a box completes the task on the server.
+
+No account with anyone but your own server, no tracking. English, French, German, Spanish, Portuguese, Russian. Free software, MIT licence.
+
+Pierre Gallaz · developed with Claude Code

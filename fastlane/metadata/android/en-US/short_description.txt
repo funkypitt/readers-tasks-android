@@ -1,0 +1,1 @@
+Black-and-white, text-only CalDAV task lists for e-ink (Infomaniak, Nextcloud…)
