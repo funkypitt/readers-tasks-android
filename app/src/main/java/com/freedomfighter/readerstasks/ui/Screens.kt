@@ -280,6 +280,7 @@ fun SettingsScreen(nav: Nav, app: App) {
             ScreenTitle(stringResource(R.string.settings), onBack = { nav.pop() })
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 8.dp)) {
                 TextRow(stringResource(R.string.account), secondary = s.username.ifBlank { stringResource(R.string.account_needed) }, size = typo.title) { nav.push(Screen.Account) }
+                TasksCredentialsRows(app)
                 Rule(Modifier.padding(vertical = 8.dp))
                 val themeName = when (s.theme) { ThemeMode.DARK -> stringResource(R.string.theme_dark); ThemeMode.LIGHT -> stringResource(R.string.theme_light); ThemeMode.SYSTEM -> stringResource(R.string.theme_system) }
                 TextRow(stringResource(R.string.setting_theme, themeName), size = typo.title) { app.prefs.setTheme(next(s.theme)) }
@@ -295,6 +296,23 @@ fun SettingsScreen(nav: Nav, app: App) {
             }
         }
     }
+}
+
+/** The account as the "readers-tasks" section of the credentials file (url, username, password). */
+@Composable
+fun TasksCredentialsRows(app: App, afterImport: (com.freedomfighter.readerstasks.data.Settings) -> Unit = {}) {
+    CredentialsRows(
+        section = "readers-tasks", shortName = "tasks", keys = setOf("url", "username", "password"),
+        hint = stringResource(R.string.export_credentials_hint),
+        current = { app.prefs.settings.value.let { mapOf("url" to it.serverUrl, "username" to it.username, "password" to it.password) } },
+        onImport = { v ->
+            val s = app.prefs.settings.value
+            app.prefs.setAccount(v["url"] ?: s.serverUrl, v["username"] ?: s.username, v["password"] ?: s.password)
+            val now = app.prefs.settings.value.copy(serverUrl = (v["url"] ?: s.serverUrl).trim(), username = (v["username"] ?: s.username).trim(), password = v["password"] ?: s.password)
+            if (now.hasAccount) app.store.syncAll()
+            afterImport(now)
+        }
+    )
 }
 
 private inline fun <reified E : Enum<E>> next(e: E): E { val all = enumValues<E>(); return all[(e.ordinal + 1) % all.size] }
@@ -334,6 +352,9 @@ fun AccountScreen(nav: Nav, app: App) {
                     is SyncState.Error -> Small(st.message, Modifier.padding(rowPadH), color = colors.fg, maxLines = 4)
                     SyncState.Idle -> Unit
                 }
+                Rule(Modifier.padding(vertical = 8.dp))
+                // a new phone: the account from a file exported by another phone or the desktop app
+                TasksCredentialsRows(app) { v -> url = v.serverUrl; user = v.username; password = v.password; submitted = true }
             }
         }
     }

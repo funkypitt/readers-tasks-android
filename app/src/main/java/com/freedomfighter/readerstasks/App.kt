@@ -14,6 +14,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         prefs = Prefs(this)
+        com.freedomfighter.readerstasks.ui.CredentialsShare.clear(this)
         store = Store(this, prefs)
         store.onChanged = { contentResolver.notifyChange(TasksProvider.BASE, null) }
     }

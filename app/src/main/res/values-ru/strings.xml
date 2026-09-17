@@ -60,4 +60,11 @@
     <string name="widget_list_name">Reader\'s Tasks · открытые задачи</string>
     <string name="widget_line_desc">первая открытая задача текущего списка, галочка, + для новой</string>
     <string name="widget_list_desc">открытые задачи списка, галочки, + для новой</string>
+    <string name="export_credentials">экспортировать учётные данные</string>
+    <string name="import_credentials">импортировать учётные данные</string>
+    <string name="credentials_imported">учётные данные импортированы</string>
+    <string name="credentials_not_file">это не файл учётных данных Reader\'s</string>
+    <string name="credentials_nothing">в этом файле нет ничего для %1$s</string>
+    <string name="credentials_empty">пока нет аккаунта для экспорта</string>
+    <string name="export_credentials_hint">файл для настройки другого телефона или настольного приложения — в нём пароль: храните его в тайне</string>
 </resources>

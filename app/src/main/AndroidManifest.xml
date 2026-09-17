@@ -43,5 +43,13 @@
             android:authorities="com.freedomfighter.readerstasks"
             android:exported="true"
             android:permission="com.freedomfighter.readerstasks.permission.ACCESS" />
+        <!-- the credentials file handed to the share sheet -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.freedomfighter.readerstasks.credentials"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/credentials_paths" />
+        </provider>
     </application>
 </manifest>

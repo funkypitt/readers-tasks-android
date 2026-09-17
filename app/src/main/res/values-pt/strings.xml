@@ -60,4 +60,11 @@
     <string name="widget_list_name">Reader\'s Tasks · tarefas em aberto</string>
     <string name="widget_line_desc">a primeira tarefa em aberto da lista atual, uma caixa, + para adicionar</string>
     <string name="widget_list_desc">as tarefas em aberto da lista, caixas, + para adicionar</string>
+    <string name="export_credentials">exportar credenciais</string>
+    <string name="import_credentials">importar credenciais</string>
+    <string name="credentials_imported">credenciais importadas</string>
+    <string name="credentials_not_file">não é um ficheiro de credenciais Reader\'s</string>
+    <string name="credentials_nothing">este ficheiro não contém nada para %1$s</string>
+    <string name="credentials_empty">ainda não há conta para exportar</string>
+    <string name="export_credentials_hint">um ficheiro para configurar outro telefone ou a app de computador — contém a palavra-passe: mantenha-o privado</string>
 </resources>

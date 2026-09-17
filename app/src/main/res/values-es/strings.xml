@@ -60,4 +60,11 @@
     <string name="widget_list_name">Reader\'s Tasks · tareas pendientes</string>
     <string name="widget_line_desc">la primera tarea pendiente de la lista actual, una casilla, + para añadir</string>
     <string name="widget_list_desc">las tareas pendientes de la lista, casillas, + para añadir</string>
+    <string name="export_credentials">exportar credenciales</string>
+    <string name="import_credentials">importar credenciales</string>
+    <string name="credentials_imported">credenciales importadas</string>
+    <string name="credentials_not_file">no es un archivo de credenciales Reader\'s</string>
+    <string name="credentials_nothing">este archivo no contiene nada para %1$s</string>
+    <string name="credentials_empty">todavía no hay cuenta que exportar</string>
+    <string name="export_credentials_hint">un archivo para configurar otro teléfono o la app de escritorio — contiene la contraseña: manténgalo privado</string>
 </resources>

@@ -60,4 +60,11 @@
     <string name="widget_list_name">Reader\'s Tasks · tâches en cours</string>
     <string name="widget_line_desc">la première tâche de la liste en cours, une case à cocher, + pour en ajouter</string>
     <string name="widget_list_desc">les tâches en cours de la liste, des cases à cocher, + pour en ajouter</string>
+    <string name="export_credentials">exporter les identifiants</string>
+    <string name="import_credentials">importer les identifiants</string>
+    <string name="credentials_imported">identifiants importés</string>
+    <string name="credentials_not_file">ce n\'est pas un fichier d\'identifiants Reader\'s</string>
+    <string name="credentials_nothing">ce fichier ne contient rien pour %1$s</string>
+    <string name="credentials_empty">aucun compte à exporter pour l\'instant</string>
+    <string name="export_credentials_hint">un fichier pour configurer un autre téléphone ou l\'app de bureau — il contient le mot de passe : gardez-le privé</string>
 </resources>
