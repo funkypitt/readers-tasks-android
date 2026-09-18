@@ -67,4 +67,8 @@
     <string name="credentials_nothing">в этом файле нет ничего для %1$s</string>
     <string name="credentials_empty">пока нет аккаунта для экспорта</string>
     <string name="export_credentials_hint">файл для настройки другого телефона или настольного приложения — в нём пароль: храните его в тайне</string>
+    <string name="link_call">позвонить</string>
+    <string name="link_write">написать</string>
+    <string name="link_open">открыть</string>
+    <string name="no_app_for_this">на телефоне нет приложения для этого</string>
 </resources>

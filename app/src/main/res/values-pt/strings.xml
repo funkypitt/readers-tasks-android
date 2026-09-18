@@ -67,4 +67,8 @@
     <string name="credentials_nothing">este ficheiro não contém nada para %1$s</string>
     <string name="credentials_empty">ainda não há conta para exportar</string>
     <string name="export_credentials_hint">um ficheiro para configurar outro telefone ou a app de computador — contém a palavra-passe: mantenha-o privado</string>
+    <string name="link_call">ligar</string>
+    <string name="link_write">escrever a</string>
+    <string name="link_open">abrir</string>
+    <string name="no_app_for_this">nenhuma app para isto no telefone</string>
 </resources>

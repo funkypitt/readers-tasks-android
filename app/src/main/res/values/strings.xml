@@ -68,4 +68,8 @@
     <string name="credentials_nothing">this file holds nothing for %1$s</string>
     <string name="credentials_empty">no account to export yet</string>
     <string name="export_credentials_hint">a file to set up another phone or the desktop app — it holds the password: keep it private</string>
+    <string name="link_call">call</string>
+    <string name="link_write">write to</string>
+    <string name="link_open">open</string>
+    <string name="no_app_for_this">no app for this on the phone</string>
 </resources>

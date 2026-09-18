@@ -44,6 +44,8 @@ import com.freedomfighter.readerstasks.data.SyncState
 import com.freedomfighter.readerstasks.data.TaskRow
 import com.freedomfighter.readerstasks.data.TextSize
 import com.freedomfighter.readerstasks.data.ThemeMode
+import com.freedomfighter.readerstasks.data.findLinks
+import com.freedomfighter.readerstasks.data.openLink
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -77,6 +79,28 @@ fun dueLabel(due: LocalDate?): String {
 
 /** The list of open tasks of the current list — the main screen. */
 @OptIn(ExperimentalFoundationApi::class)
+/**
+ * One menu line per thing the task holds that can be acted on: "call …", "write to …", "open …".
+ * Nothing is added when the task holds none.
+ */
+@Composable
+fun linkItems(context: android.content.Context, text: String): List<MenuItem> {
+    val call = stringResource(R.string.link_call)
+    val write = stringResource(R.string.link_write)
+    val open = stringResource(R.string.link_open)
+    val noApp = stringResource(R.string.no_app_for_this)
+    return findLinks(text).map { link ->
+        val verb = when {
+            link.uri.startsWith("tel:") -> call
+            link.uri.startsWith("mailto:") -> write
+            else -> open
+        }
+        MenuItem("$verb ${link.text}") {
+            if (!openLink(context, link.uri)) android.widget.Toast.makeText(context, noApp, android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
 @Composable
 fun TasksScreen(nav: Nav, app: App) {
     val cache by app.store.cache.collectAsState()
@@ -91,6 +115,7 @@ fun TasksScreen(nav: Nav, app: App) {
     val done = if (listUrl != null) app.store.doneTasks(listUrl) else emptyList()
     var showDone by remember { mutableStateOf(false) }
     var adding by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     val activity = LocalContext.current as? com.freedomfighter.readerstasks.MainActivity
     LaunchedEffect(activity?.addRequests) { if (app.pendingAdd) { app.pendingAdd = false; adding = true } }
     var menuFor by remember { mutableStateOf<TaskRow?>(null) }
@@ -177,6 +202,8 @@ fun TasksScreen(nav: Nav, app: App) {
                 items = buildList {
                     if (t.completed) add(MenuItem(stringResource(R.string.reopen)) { app.store.setCompleted(listUrl!!, t, false) })
                     else add(MenuItem(stringResource(R.string.complete)) { app.store.setCompleted(listUrl!!, t, true) })
+                    // a number, a mail or a web address written in the task, ready to be acted on
+                    addAll(linkItems(context, t.summary))
                     add(MenuItem(stringResource(R.string.rename)) { renameFor = t })
                     add(MenuItem(stringResource(R.string.due_tomorrow_set)) { app.store.rename(listUrl!!, t, t.summary, LocalDate.now().plusDays(1), keepDue = false) })
                     add(MenuItem(stringResource(R.string.due_clear)) { app.store.rename(listUrl!!, t, t.summary, null, keepDue = false) })
