@@ -1,3 +1,5 @@
+![Reader's Tasks](docs/banner.png)
+
 # Reader's Tasks for Android
 
 The Android twin of [Reader's Tasks](https://github.com/funkypitt/readers-tasks) and the
