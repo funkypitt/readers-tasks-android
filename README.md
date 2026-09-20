@@ -2,24 +2,32 @@
 
 # Reader's Tasks for Android
 
-The Android twin of [Reader's Tasks](https://github.com/funkypitt/readers-tasks) and the
-task app behind the tasks tile of [Reader's Launcher](https://github.com/funkypitt/readers-launcher):
-a black-and-white, text-only client for CalDAV task lists (Infomaniak, Nextcloud, Tasks.org
-Cloud, Radicale…).
+The open tasks of your CalDAV lists (Infomaniak, Nextcloud, Tasks.org Cloud, Radicale…) as
+plain text. Tick to complete, one line to add, long press for the rest. No priorities, no
+projects, no account with the app: your server, your password, on the phone only. Android twin
+of the desktop [Reader's Tasks](https://github.com/funkypitt/readers-tasks).
 
-* One screen: the open tasks of the current list, ☐ to complete, a line to add, long press
-  for rename, due tomorrow, delete. "show n done" reveals completed tasks; ☑ reopens one.
-* Tap the list name at the top to switch list. Lists: hide, reorder (long press).
-* Long press a task, then drag it to its place: the order is saved on the server as
-  X-APPLE-SORT-ORDER, so the desktop app shows the same order.
-* Same look as the launcher: white on black or black on white, serif / sans / mono, three sizes.
-* A signature-protected content provider lets Reader's Launcher read and write the lists
-  without any permission prompt (both apps are signed with the same key).
+## Key points
 
-## Account
+* One screen: the open tasks of the current list. ☐ completes, the line at the bottom adds,
+  long press renames, sets "due tomorrow" or deletes. "show n done" reveals completed tasks; ☑ reopens one.
+* Tap the list name at the top to switch list. Lists can be hidden and reordered (long press).
+* Long press a task, then drag it: the order is saved on the server (X-APPLE-SORT-ORDER), so
+  the desktop app shows the same order.
+* Account: settings → account: server, username, app password. Infomaniak:
+  `https://sync.infomaniak.com`, username like `AB12345`, an application password with two-factor on.
+* The network is used for your CalDAV server only. Credentials export and import as a JSON
+  file shared with the desktop apps.
+* Feeds the tasks tile of [Reader's Launcher](https://github.com/funkypitt/readers-launcher)
+  through a signature-protected provider: no permission prompt, both apps carry the same key.
+* Two home-screen widgets for any launcher: the first open task, or the open tasks as a list.
+  Ticking completes on the server; + opens the new-task prompt.
+* White on black or black on white, serif / sans / mono, three sizes. Six languages.
 
-Settings → account: server, username, app password. Infomaniak: `https://sync.infomaniak.com`,
-username like `AB12345`, an application password if two-factor authentication is on.
+## Install
+
+From the [F-Droid repo](https://funkypitt.github.io/fdroid-repo/) or the APK attached to a
+release.
 
 ## Build
 
@@ -30,12 +38,6 @@ username like `AB12345`, an application password if two-factor authentication is
 Kotlin, Jetpack Compose (foundation only), kotlinx-serialization for the cache file. The
 CalDAV part is four HTTP requests (PROPFIND, REPORT, PUT, DELETE) over HttpURLConnection —
 no library. MIT.
-
-## Widgets
-
-Two standard home-screen widgets for any launcher, black and white: the first open task of the
-current list (a box to tick, + for a new one) and the open tasks as a list with boxes. Ticking a
-box completes the task on the server; + opens the app on its new-task prompt.
 
 ## Crédits / Credits
 
