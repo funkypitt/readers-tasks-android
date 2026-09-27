@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.freedomfighter.readerstasks.App
 import com.freedomfighter.readerstasks.R
+import com.freedomfighter.readerstasks.caldav.CalDavException
 import com.freedomfighter.readerstasks.data.Align
 import com.freedomfighter.readerstasks.data.FontChoice
 import com.freedomfighter.readerstasks.data.ListInfo
@@ -75,6 +76,16 @@ fun dueLabel(due: LocalDate?): String {
         days < 7L -> due.format(DateTimeFormatter.ofPattern("EEEE")).lowercase()
         else -> due.format(DateTimeFormatter.ofPattern("d MMM")).lowercase()
     }
+}
+
+/** A failed sync in the reader's language; the system's own words (English, often) only after a translated lead. */
+@Composable
+fun syncErrorText(e: SyncState.Error): String = when (e.reason) {
+    CalDavException.Reason.WRONG_LOGIN -> stringResource(R.string.error_wrong_login)
+    CalDavException.Reason.NO_TASK_LIST -> stringResource(R.string.error_no_task_list)
+    CalDavException.Reason.NO_ACCOUNT -> stringResource(R.string.account_needed)
+    CalDavException.Reason.METHOD_UNSUPPORTED -> stringResource(R.string.error_method_unsupported, e.message)
+    else -> stringResource(R.string.sync_failed_detail, e.message)
 }
 
 /** The list of open tasks of the current list — the main screen. */
@@ -175,7 +186,7 @@ fun TasksScreen(nav: Nav, app: App) {
             Small(
                 when (val s = sync) {
                     SyncState.Running -> stringResource(R.string.syncing)
-                    is SyncState.Error -> s.message
+                    is SyncState.Error -> syncErrorText(s)
                     SyncState.Idle -> if (cache.syncedAt > 0) stringResource(R.string.synced, java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date(cache.syncedAt))) else ""
                 },
                 Modifier.padding(horizontal = rowPadH, vertical = 6.dp), maxLines = 1
@@ -311,7 +322,7 @@ fun SettingsScreen(nav: Nav, app: App) {
                 Rule(Modifier.padding(vertical = 8.dp))
                 val themeName = when (s.theme) { ThemeMode.DARK -> stringResource(R.string.theme_dark); ThemeMode.LIGHT -> stringResource(R.string.theme_light); ThemeMode.SYSTEM -> stringResource(R.string.theme_system) }
                 TextRow(stringResource(R.string.setting_theme, themeName), size = typo.title) { app.prefs.setTheme(next(s.theme)) }
-                val fontName = when (s.font) { FontChoice.SERIF -> "serif"; FontChoice.SANS -> "sans"; FontChoice.MONO -> "mono" }
+                val fontName = when (s.font) { FontChoice.SERIF -> stringResource(R.string.font_serif); FontChoice.SANS -> stringResource(R.string.font_sans); FontChoice.MONO -> stringResource(R.string.font_mono) }
                 TextRow(stringResource(R.string.setting_font, fontName), size = typo.title) { app.prefs.setFont(next(s.font)) }
                 val sizeName = when (s.textSize) { TextSize.SMALL -> stringResource(R.string.size_small); TextSize.MEDIUM -> stringResource(R.string.size_medium); TextSize.LARGE -> stringResource(R.string.size_large) }
                 TextRow(stringResource(R.string.setting_text_size, sizeName), size = typo.title) { app.prefs.setTextSize(next(s.textSize)) }
@@ -376,7 +387,7 @@ fun AccountScreen(nav: Nav, app: App) {
                 }
                 when (val st = sync) {
                     SyncState.Running -> Small(stringResource(R.string.connecting), Modifier.padding(rowPadH))
-                    is SyncState.Error -> Small(st.message, Modifier.padding(rowPadH), color = colors.fg, maxLines = 4)
+                    is SyncState.Error -> Small(syncErrorText(st), Modifier.padding(rowPadH), color = colors.fg, maxLines = 4)
                     SyncState.Idle -> Unit
                 }
                 Rule(Modifier.padding(vertical = 8.dp))

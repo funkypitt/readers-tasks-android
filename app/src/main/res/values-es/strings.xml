@@ -66,9 +66,18 @@
     <string name="credentials_not_file">no es un archivo de credenciales Reader\'s</string>
     <string name="credentials_nothing">este archivo no contiene nada para %1$s</string>
     <string name="credentials_empty">todavía no hay cuenta que exportar</string>
-    <string name="export_credentials_hint">un archivo para configurar otro teléfono o la app de escritorio — contiene la contraseña: manténgalo privado</string>
+    <string name="export_credentials_hint">un archivo para configurar otro teléfono o la app de escritorio — contiene la contraseña: mantenlo privado</string>
     <string name="link_call">llamar</string>
     <string name="link_write">escribir a</string>
     <string name="link_open">abrir</string>
     <string name="no_app_for_this">ninguna app para esto en el teléfono</string>
+    <string name="error_wrong_login">usuario o contraseña de aplicación incorrectos</string>
+    <string name="error_no_task_list">no hay ninguna lista de tareas en esta dirección</string>
+    <string name="error_method_unsupported">este teléfono no puede enviar %1$s al servidor</string>
+    <string name="sync_failed_detail">la sincronización falló: %1$s</string>
+    <string name="credentials_unreadable">no se puede leer el archivo: %1$s</string>
+    <string name="credentials_export_failed">la exportación falló: %1$s</string>
+    <string name="font_serif">con serifa</string>
+    <string name="font_sans">sin serifa</string>
+    <string name="font_mono">monoespaciada</string>
 </resources>

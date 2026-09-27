@@ -7,7 +7,10 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-class CalDavException(message: String) : IOException(message)
+/** [reason] lets the screen say what went wrong in the reader's language; [message] stays technical. */
+class CalDavException(message: String, val reason: Reason = Reason.OTHER) : IOException(message) {
+    enum class Reason { WRONG_LOGIN, NO_TASK_LIST, NO_ACCOUNT, METHOD_UNSUPPORTED, OTHER }
+}
 
 data class TaskList(val name: String, val url: String)
 data class RemoteTask(val href: String, val etag: String?, val ics: String)
@@ -41,7 +44,7 @@ class CalDav(baseUrl: String, private val username: String, private val password
             if (body != null) c.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
             val code = c.responseCode
             val text = (if (code in 200..299) c.inputStream else c.errorStream)?.bufferedReader()?.use { it.readText() } ?: ""
-            if (code == 401) throw CalDavException("wrong username or app password")
+            if (code == 401) throw CalDavException("wrong username or app password", CalDavException.Reason.WRONG_LOGIN)
             if (code >= 400) throw CalDavException("$method: HTTP $code")
             return Resp(code, text, c.headerFields)
         } finally { c.disconnect() }
@@ -55,7 +58,7 @@ class CalDav(baseUrl: String, private val username: String, private val password
         while (cls != null) {
             try { val f = cls.getDeclaredField("method"); f.isAccessible = true; f.set(target, method); return } catch (_: NoSuchFieldException) { cls = cls.superclass }
         }
-        throw CalDavException("cannot send $method on this device")
+        throw CalDavException(method, CalDavException.Reason.METHOD_UNSUPPORTED)
     }
 
     private fun resolve(href: String, against: String): String = URL(URL(against), href).toString()
@@ -125,7 +128,7 @@ class CalDav(baseUrl: String, private val username: String, private val password
             }
             if (lists.isNotEmpty()) return lists
         }
-        throw CalDavException("no task list found at this address")
+        throw CalDavException("no task list found at this address", CalDavException.Reason.NO_TASK_LIST)
     }
 
     fun tasks(listUrl: String): List<RemoteTask> {

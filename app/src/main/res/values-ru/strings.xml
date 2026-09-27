@@ -65,10 +65,19 @@
     <string name="credentials_imported">учётные данные импортированы</string>
     <string name="credentials_not_file">это не файл учётных данных Reader\'s</string>
     <string name="credentials_nothing">в этом файле нет ничего для %1$s</string>
-    <string name="credentials_empty">пока нет аккаунта для экспорта</string>
+    <string name="credentials_empty">пока нет учётной записи для экспорта</string>
     <string name="export_credentials_hint">файл для настройки другого телефона или настольного приложения — в нём пароль: храните его в тайне</string>
     <string name="link_call">позвонить</string>
     <string name="link_write">написать</string>
     <string name="link_open">открыть</string>
     <string name="no_app_for_this">на телефоне нет приложения для этого</string>
+    <string name="error_wrong_login">неверное имя пользователя или пароль приложения</string>
+    <string name="error_no_task_list">по этому адресу нет списка задач</string>
+    <string name="error_method_unsupported">этот телефон не может отправить %1$s на сервер</string>
+    <string name="sync_failed_detail">синхронизация не удалась: %1$s</string>
+    <string name="credentials_unreadable">файл не читается: %1$s</string>
+    <string name="credentials_export_failed">экспорт не удался: %1$s</string>
+    <string name="font_serif">с засечками</string>
+    <string name="font_sans">без засечек</string>
+    <string name="font_mono">моноширинный</string>
 </resources>

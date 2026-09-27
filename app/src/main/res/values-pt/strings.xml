@@ -71,4 +71,13 @@
     <string name="link_write">escrever a</string>
     <string name="link_open">abrir</string>
     <string name="no_app_for_this">nenhuma app para isto no telefone</string>
+    <string name="error_wrong_login">utilizador ou palavra-passe de aplicação incorretos</string>
+    <string name="error_no_task_list">nenhuma lista de tarefas neste endereço</string>
+    <string name="error_method_unsupported">este telefone não consegue enviar %1$s ao servidor</string>
+    <string name="sync_failed_detail">a sincronização falhou: %1$s</string>
+    <string name="credentials_unreadable">não é possível ler o ficheiro: %1$s</string>
+    <string name="credentials_export_failed">a exportação falhou: %1$s</string>
+    <string name="font_serif">com serifa</string>
+    <string name="font_sans">sem serifa</string>
+    <string name="font_mono">monoespaçada</string>
 </resources>

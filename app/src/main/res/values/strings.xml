@@ -72,4 +72,13 @@
     <string name="link_write">write to</string>
     <string name="link_open">open</string>
     <string name="no_app_for_this">no app for this on the phone</string>
+    <string name="error_wrong_login">wrong username or app password</string>
+    <string name="error_no_task_list">no task list found at this address</string>
+    <string name="error_method_unsupported">this phone cannot send %1$s to the server</string>
+    <string name="sync_failed_detail">sync failed: %1$s</string>
+    <string name="credentials_unreadable">the file cannot be read: %1$s</string>
+    <string name="credentials_export_failed">export failed: %1$s</string>
+    <string name="font_serif">serif</string>
+    <string name="font_sans">sans</string>
+    <string name="font_mono">mono</string>
 </resources>

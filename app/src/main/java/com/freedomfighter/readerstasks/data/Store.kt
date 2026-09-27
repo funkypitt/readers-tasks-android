@@ -47,7 +47,8 @@ data class Cache(
 sealed class SyncState {
     data object Idle : SyncState()
     data object Running : SyncState()
-    data class Error(val message: String) : SyncState()
+    /** [reason] null: not a CalDAV failure, [message] is the system's own words. */
+    data class Error(val message: String, val reason: CalDavException.Reason? = null) : SyncState()
 }
 
 /**
@@ -85,7 +86,7 @@ class Store(private val context: Context, private val prefs: Prefs) {
 
     private fun client(): CalDav {
         val s = prefs.settings.value
-        if (!s.hasAccount) throw CalDavException("no account")
+        if (!s.hasAccount) throw CalDavException("no account", CalDavException.Reason.NO_ACCOUNT)
         return CalDav(s.serverUrl, s.username, s.password)
     }
 
@@ -196,7 +197,7 @@ class Store(private val context: Context, private val prefs: Prefs) {
             lock.withLock {
                 _sync.value = SyncState.Running
                 try { block(); _sync.value = SyncState.Idle } catch (e: Exception) {
-                    Log.w(TAG, "sync failed", e); _sync.value = SyncState.Error(e.message ?: e.javaClass.simpleName)
+                    Log.w(TAG, "sync failed", e); _sync.value = SyncState.Error(e.message ?: e.javaClass.simpleName, (e as? CalDavException)?.reason)
                 }
             }
         }

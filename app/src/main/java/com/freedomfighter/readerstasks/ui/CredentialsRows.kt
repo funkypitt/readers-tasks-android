@@ -63,12 +63,12 @@ fun CredentialsRows(section: String, shortName: String, keys: Set<String>, hint:
             val text = context.contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) } ?: throw Credentials.NotCredentials()
             onImport(Credentials.read(text, section, keys))
             imported
-        } catch (e: Credentials.NotCredentials) { notFile } catch (e: Credentials.NothingFor) { nothing } catch (e: Exception) { e.message ?: notFile }
+        } catch (e: Credentials.NotCredentials) { notFile } catch (e: Credentials.NothingFor) { nothing } catch (e: Exception) { e.message?.let { context.getString(R.string.credentials_unreadable, it) } ?: notFile }
     }
     TextRow(stringResource(R.string.export_credentials), secondary = hint, size = typo.title) {
         val values = current().filterValues { it.isNotBlank() }
         if (values.isEmpty()) message = empty
-        else runCatching { CredentialsShare.share(context, section, shortName, values); message = null }.onFailure { message = it.message }
+        else runCatching { CredentialsShare.share(context, section, shortName, values); message = null }.onFailure { message = context.getString(R.string.credentials_export_failed, it.message ?: it.javaClass.simpleName) }
     }
     TextRow(stringResource(R.string.import_credentials), size = typo.title) {
         picker.launch(arrayOf("application/json", "text/plain", "application/octet-stream", "*/*"))
