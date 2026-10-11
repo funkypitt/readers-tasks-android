@@ -16,8 +16,9 @@ of the desktop [Reader's Tasks](https://github.com/funkypitt/readers-tasks).
   the desktop app shows the same order.
 * Account: settings → account: server, username, app password. Infomaniak:
   `https://sync.infomaniak.com`, username like `AB12345`, an application password with two-factor on.
-* The network is used for your CalDAV server only. Credentials export and import as a JSON
-  file shared with the desktop apps.
+* The network is used for your CalDAV server only. Credentials export as a JSON file
+  (`readers-tasks-credentials.json`, saved where you choose, then offered to the share menu)
+  and import from any such file, shared with the desktop apps.
 * Feeds the tasks tile of [Reader's Launcher](https://github.com/funkypitt/readers-launcher)
   through a signature-protected provider: no permission prompt, both apps carry the same key.
 * Two home-screen widgets for any launcher: the first open task, or the open tasks as a list.

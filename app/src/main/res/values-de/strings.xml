@@ -61,6 +61,8 @@
     <string name="widget_line_desc">die erste offene Aufgabe der aktuellen Liste, ein Kästchen, + für eine neue</string>
     <string name="widget_list_desc">die offenen Aufgaben der Liste, Kästchen, + für eine neue</string>
     <string name="export_credentials">Zugangsdaten exportieren</string>
+    <string name="export_saved">gespeichert als %1$s</string>
+    <string name="share_export">diese Datei teilen…</string>
     <string name="import_credentials">Zugangsdaten importieren</string>
     <string name="credentials_imported">Zugangsdaten importiert</string>
     <string name="credentials_not_file">keine Reader\'s-Zugangsdatendatei</string>

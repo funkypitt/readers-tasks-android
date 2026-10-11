@@ -17,6 +17,9 @@ object Credentials {
     const val FORMAT = "readers-credentials"
     const val VERSION = 1
 
+    /** The exported file is named after the app that exports it: readers-tasks-credentials.json. */
+    fun fileName(shortName: String) = "readers-$shortName-credentials.json"
+
     /** Not JSON, or JSON that is not a credentials file. */
     class NotCredentials : Exception("not a Reader's credentials file")
     /** A credentials file with nothing this app can use. */

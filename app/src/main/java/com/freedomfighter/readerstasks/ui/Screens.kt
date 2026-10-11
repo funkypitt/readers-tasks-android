@@ -312,13 +312,14 @@ fun ListsScreen(nav: Nav, app: App) {
 fun SettingsScreen(nav: Nav, app: App) {
     val s by app.prefs.settings.collectAsState()
     val typo = LocalTypo.current
+    val export = rememberCredentialsExport("tasks")
     BackHandler { nav.pop() }
     Page {
         Column(Modifier.fillMaxSize()) {
             ScreenTitle(stringResource(R.string.settings), onBack = { nav.pop() })
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 8.dp)) {
                 TextRow(stringResource(R.string.account), secondary = s.username.ifBlank { stringResource(R.string.account_needed) }, size = typo.title) { nav.push(Screen.Account) }
-                TasksCredentialsRows(app)
+                TasksCredentialsRows(app, export)
                 Rule(Modifier.padding(vertical = 8.dp))
                 val themeName = when (s.theme) { ThemeMode.DARK -> stringResource(R.string.theme_dark); ThemeMode.LIGHT -> stringResource(R.string.theme_light); ThemeMode.SYSTEM -> stringResource(R.string.theme_system) }
                 TextRow(stringResource(R.string.setting_theme, themeName), size = typo.title) { app.prefs.setTheme(next(s.theme)) }
@@ -333,14 +334,15 @@ fun SettingsScreen(nav: Nav, app: App) {
                 TextRow(stringResource(R.string.credits), size = typo.title) { }
             }
         }
+        CredentialsExportMenu(export)
     }
 }
 
 /** The account as the "readers-tasks" section of the credentials file (url, username, password). */
 @Composable
-fun TasksCredentialsRows(app: App, afterImport: (com.freedomfighter.readerstasks.data.Settings) -> Unit = {}) {
+fun TasksCredentialsRows(app: App, export: CredentialsExport, afterImport: (com.freedomfighter.readerstasks.data.Settings) -> Unit = {}) {
     CredentialsRows(
-        section = "readers-tasks", shortName = "tasks", keys = setOf("url", "username", "password"),
+        section = "readers-tasks", export = export, keys = setOf("url", "username", "password"),
         hint = stringResource(R.string.export_credentials_hint),
         current = { app.prefs.settings.value.let { mapOf("url" to it.serverUrl, "username" to it.username, "password" to it.password) } },
         onImport = { v ->
@@ -366,6 +368,7 @@ fun AccountScreen(nav: Nav, app: App) {
     var user by remember { mutableStateOf(s.username) }
     var password by remember { mutableStateOf(s.password) }
     var submitted by remember { mutableStateOf(false) }
+    val export = rememberCredentialsExport("tasks")
     BackHandler { nav.pop() }
     LaunchedEffect(sync, submitted) { if (submitted && sync is SyncState.Idle && app.store.cache.value.lists.isNotEmpty()) nav.pop() }
     Page {
@@ -392,8 +395,9 @@ fun AccountScreen(nav: Nav, app: App) {
                 }
                 Rule(Modifier.padding(vertical = 8.dp))
                 // a new phone: the account from a file exported by another phone or the desktop app
-                TasksCredentialsRows(app) { v -> url = v.serverUrl; user = v.username; password = v.password; submitted = true }
+                TasksCredentialsRows(app, export) { v -> url = v.serverUrl; user = v.username; password = v.password; submitted = true }
             }
         }
+        CredentialsExportMenu(export)
     }
 }

@@ -62,6 +62,8 @@
     <string name="widget_line_desc">the first open task of the current list, a box to tick, + for a new one</string>
     <string name="widget_list_desc">the open tasks of the current list, boxes to tick, + for a new one</string>
     <string name="export_credentials">export credentials</string>
+    <string name="export_saved">saved as %1$s</string>
+    <string name="share_export">share this file…</string>
     <string name="import_credentials">import credentials</string>
     <string name="credentials_imported">credentials imported</string>
     <string name="credentials_not_file">not a Reader\'s credentials file</string>

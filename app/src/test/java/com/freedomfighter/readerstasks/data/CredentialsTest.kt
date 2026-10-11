@@ -22,6 +22,10 @@ class CredentialsTest {
         assertEquals(values, Credentials.read(text, section, keys))
     }
 
+    @Test fun theExportIsNamedAfterTheApp() {
+        assertEquals("readers-tasks-credentials.json", Credentials.fileName("tasks"))
+    }
+
     @Test fun blankValuesAreLeftOut() {
         val text = Credentials.build(section, mapOf("url" to "https://x", "username" to "", "password" to " "))
         assertEquals(mapOf("url" to "https://x"), Credentials.read(text, section, keys))
