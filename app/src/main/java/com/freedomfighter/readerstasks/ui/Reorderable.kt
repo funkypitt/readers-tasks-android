@@ -141,7 +141,7 @@ fun <T> ReorderableColumn(
                     .fillMaxWidth()
                     .zIndex(if (dragging) 1f else 0f)
                     .graphicsLayer { translationY = if (dragging) dragOffset else 0f }
-                    .background(if (dragging) colors.fg.copy(alpha = 0.12f) else colors.bg)
+                    .background(if (dragging) colors.accent.copy(alpha = 0.12f) else colors.bg)
             ) { row(item, dragging) }
         }
         tail()

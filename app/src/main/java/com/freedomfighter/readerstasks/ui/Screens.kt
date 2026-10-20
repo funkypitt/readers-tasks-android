@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -41,6 +40,7 @@ import com.freedomfighter.readerstasks.caldav.CalDavException
 import com.freedomfighter.readerstasks.data.Align
 import com.freedomfighter.readerstasks.data.FontChoice
 import com.freedomfighter.readerstasks.data.ListInfo
+import com.freedomfighter.readerstasks.data.Palettes
 import com.freedomfighter.readerstasks.data.SyncState
 import com.freedomfighter.readerstasks.data.TaskRow
 import com.freedomfighter.readerstasks.data.TextSize
@@ -117,7 +117,6 @@ fun TasksScreen(nav: Nav, app: App) {
     val cache by app.store.cache.collectAsState()
     val sync by app.store.sync.collectAsState()
     val settings by app.prefs.settings.collectAsState()
-    val colors = LocalColors.current
     val typo = LocalTypo.current
     val tick = rememberTick()
     val listUrl = cache.currentList ?: cache.lists.firstOrNull { !it.hidden }?.url
@@ -224,13 +223,13 @@ fun TasksScreen(nav: Nav, app: App) {
             )
         }
         if (pageMenu) {
-            val systemDark = isSystemInDarkTheme()
             TextMenu(
                 title = null,
                 items = buildList {
                     add(MenuItem(stringResource(R.string.lists)) { nav.push(Screen.Lists) })
                     add(MenuItem(stringResource(R.string.sync_now)) { app.store.syncAll() })
-                    add(MenuItem(if (colors.isDark) stringResource(R.string.theme_light) else stringResource(R.string.theme_dark)) { app.prefs.toggleTheme(systemDark) })
+                    // names the NEXT theme and moves to it, tap after tap
+                    add(MenuItem(themeName(Palettes.next(settings.theme))) { app.prefs.nextTheme() })
                     add(MenuItem(stringResource(R.string.settings)) { nav.push(Screen.Settings) })
                 },
                 onDismiss = { pageMenu = false }
@@ -321,8 +320,7 @@ fun SettingsScreen(nav: Nav, app: App) {
                 TextRow(stringResource(R.string.account), secondary = s.username.ifBlank { stringResource(R.string.account_needed) }, size = typo.title) { nav.push(Screen.Account) }
                 TasksCredentialsRows(app, export)
                 Rule(Modifier.padding(vertical = 8.dp))
-                val themeName = when (s.theme) { ThemeMode.DARK -> stringResource(R.string.theme_dark); ThemeMode.LIGHT -> stringResource(R.string.theme_light); ThemeMode.SYSTEM -> stringResource(R.string.theme_system) }
-                TextRow(stringResource(R.string.setting_theme, themeName), size = typo.title) { app.prefs.setTheme(next(s.theme)) }
+                TextRow(stringResource(R.string.setting_theme, themeName(s.theme)), size = typo.title) { app.prefs.nextTheme() }
                 val fontName = when (s.font) { FontChoice.SERIF -> stringResource(R.string.font_serif); FontChoice.SANS -> stringResource(R.string.font_sans); FontChoice.MONO -> stringResource(R.string.font_mono) }
                 TextRow(stringResource(R.string.setting_font, fontName), size = typo.title) { app.prefs.setFont(next(s.font)) }
                 val sizeName = when (s.textSize) { TextSize.SMALL -> stringResource(R.string.size_small); TextSize.MEDIUM -> stringResource(R.string.size_medium); TextSize.LARGE -> stringResource(R.string.size_large) }
@@ -356,6 +354,15 @@ fun TasksCredentialsRows(app: App, export: CredentialsExport, afterImport: (com.
 }
 
 private inline fun <reified E : Enum<E>> next(e: E): E { val all = enumValues<E>(); return all[(e.ordinal + 1) % all.size] }
+
+/** The name of a theme, as the settings row and the menu show it. */
+@Composable
+fun themeName(m: ThemeMode): String = stringResource(when (m) {
+    ThemeMode.DARK -> R.string.theme_dark; ThemeMode.LIGHT -> R.string.theme_light; ThemeMode.SYSTEM -> R.string.theme_system
+    ThemeMode.LAVANDE -> R.string.theme_lavande; ThemeMode.SAUGE -> R.string.theme_sauge; ThemeMode.NORDIQUE -> R.string.theme_nordique
+    ThemeMode.TERRACOTTA -> R.string.theme_terracotta; ThemeMode.COQUETTE -> R.string.theme_coquette; ThemeMode.MILITANTE -> R.string.theme_militante
+    ThemeMode.TORRIDE -> R.string.theme_torride; ThemeMode.NATURE -> R.string.theme_nature
+})
 
 /** Server, username, app password. */
 @Composable
