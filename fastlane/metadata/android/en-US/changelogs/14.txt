@@ -1,0 +1,1 @@
+With a colour theme, every line you can tap is now a rounded card in the palette's key colour, set apart by space instead of rules; menus and prompts are cards too, and the finger shows on them. The two inks stay as they were: text on the page.

@@ -2,8 +2,10 @@ package com.freedomfighter.readerstasks.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -243,14 +245,18 @@ fun TasksScreen(nav: Nav, app: App) {
 private fun TaskLine(t: TaskRow, done: Boolean, onBox: () -> Unit, onTap: () -> Unit, onLongPress: (() -> Unit)? = null) {
     val colors = LocalColors.current
     val color = if (done) colors.dim else colors.fg
+    // with a palette the line is a card; the finger on it shows the press colour
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
     Row(
         Modifier
             .fillMaxWidth()
+            .tileCard(if (pressed) colors.press else colors.tile)
             .then(
-                if (onLongPress != null) Modifier.combinedClickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onTap, onLongClick = onLongPress)
-                else Modifier.noRippleClickable(onClick = onTap)
+                if (onLongPress != null) Modifier.combinedClickable(interactionSource = interaction, indication = null, onClick = onTap, onLongClick = onLongPress)
+                else Modifier.clickable(interactionSource = interaction, indication = null, onClick = onTap)
             )
-            .padding(horizontal = rowPadH, vertical = rowPadV * 0.7f),
+            .padding(horizontal = cardPadH(), vertical = rowPadV * 0.7f),
         verticalAlignment = Alignment.CenterVertically
     ) {
         T(if (done) "☑" else "☐", Modifier.noRippleClickable { onBox() }, color = color, align = TextAlign.Start)
@@ -279,9 +285,10 @@ fun ListsScreen(nav: Nav, app: App) {
             ScreenTitle(stringResource(R.string.lists), onBack = { nav.pop() })
             LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(top = 8.dp, bottom = 24.dp)) {
                 items(visible, key = { it.url }) { l ->
-                    Box(Modifier.fillMaxWidth().combinedClickable(interactionSource = remember { MutableInteractionSource() }, indication = null,
+                    val interaction = remember { MutableInteractionSource() }
+                    Box(Modifier.fillMaxWidth().combinedClickable(interactionSource = interaction, indication = null,
                         onClick = { app.store.setCurrentList(l.url); nav.pop() }, onLongClick = { tick(); menuFor = l })) {
-                        TextRow(l.name, inverted = l.url == cache.currentList, secondary = "${app.store.openTasks(l.url).size}")
+                        TextRow(l.name, inverted = l.url == cache.currentList, secondary = "${app.store.openTasks(l.url).size}", interactionSource = interaction)
                     }
                 }
                 if (hidden.isNotEmpty()) {
@@ -383,14 +390,11 @@ fun AccountScreen(nav: Nav, app: App) {
             ScreenTitle(stringResource(R.string.account), onBack = { nav.pop() })
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 12.dp)) {
                 Small(stringResource(R.string.account_help), Modifier.padding(horizontal = rowPadH), maxLines = 8)
-                Small(stringResource(R.string.server), Modifier.padding(horizontal = rowPadH).padding(top = 20.dp))
-                ReaderTextField(url, { url = it }, Modifier.fillMaxWidth().padding(horizontal = rowPadH, vertical = 6.dp), placeholder = "https://sync.infomaniak.com", imeAction = ImeAction.Next)
+                AccountField(stringResource(R.string.server), url, { url = it }, "https://sync.infomaniak.com", ImeAction.Next, top = 20.dp)
                 Rule()
-                Small(stringResource(R.string.username), Modifier.padding(horizontal = rowPadH).padding(top = 14.dp))
-                ReaderTextField(user, { user = it }, Modifier.fillMaxWidth().padding(horizontal = rowPadH, vertical = 6.dp), placeholder = "AB12345", imeAction = ImeAction.Next)
+                AccountField(stringResource(R.string.username), user, { user = it }, "AB12345", ImeAction.Next)
                 Rule()
-                Small(stringResource(R.string.app_password), Modifier.padding(horizontal = rowPadH).padding(top = 14.dp))
-                ReaderTextField(password, { password = it }, Modifier.fillMaxWidth().padding(horizontal = rowPadH, vertical = 6.dp), placeholder = "••••••••", imeAction = ImeAction.Done, password = true)
+                AccountField(stringResource(R.string.app_password), password, { password = it }, "••••••••", ImeAction.Done, password = true)
                 Rule()
                 TextRow(stringResource(R.string.connect), inverted = url.isNotBlank() && user.isNotBlank() && password.isNotBlank(), size = typo.title) {
                     if (url.isNotBlank() && user.isNotBlank()) { app.prefs.setAccount(url, user, password); submitted = true; app.store.syncAll() }
@@ -406,5 +410,19 @@ fun AccountScreen(nav: Nav, app: App) {
             }
         }
         CredentialsExportMenu(export)
+    }
+}
+
+/**
+ * A labelled field of the account form. In the inks, text on the page over a hairline; with a
+ * palette, label and field share a card (the hairline is gone there, the card says where to tap).
+ */
+@Composable
+private fun AccountField(label: String, value: String, onChange: (String) -> Unit, placeholder: String, imeAction: ImeAction, password: Boolean = false, top: androidx.compose.ui.unit.Dp = 14.dp) {
+    val tiles = LocalColors.current.tiles
+    val padH = cardPadH()
+    Column(Modifier.fillMaxWidth().tileCard()) {
+        Small(label, Modifier.padding(horizontal = padH).padding(top = if (tiles) 12.dp else top))
+        ReaderTextField(value, onChange, Modifier.fillMaxWidth().padding(horizontal = padH, vertical = if (tiles) 10.dp else 6.dp), placeholder = placeholder, imeAction = imeAction, password = password)
     }
 }
