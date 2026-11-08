@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.freedomfighter.readerstasks"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.freedomfighter.readerstasks"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 14
-        versionName = "1.8.0"
+        targetSdk = 36
+        versionCode = 15
+        versionName = "1.9.0"
     }
 
     buildTypes { release { isMinifyEnabled = false } }
