@@ -283,7 +283,7 @@ fun ListsScreen(nav: Nav, app: App) {
     Page {
         Column(Modifier.fillMaxSize()) {
             ScreenTitle(stringResource(R.string.lists), onBack = { nav.pop() })
-            LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(top = 8.dp, bottom = 24.dp)) {
+            LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(top = 8.dp, bottom = listBottom())) {
                 items(visible, key = { it.url }) { l ->
                     val interaction = remember { MutableInteractionSource() }
                     Box(Modifier.fillMaxWidth().combinedClickable(interactionSource = interaction, indication = null,
@@ -323,7 +323,7 @@ fun SettingsScreen(nav: Nav, app: App) {
     Page {
         Column(Modifier.fillMaxSize()) {
             ScreenTitle(stringResource(R.string.settings), onBack = { nav.pop() })
-            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 8.dp)) {
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 8.dp, bottom = listBottom())) {
                 TextRow(stringResource(R.string.account), secondary = s.username.ifBlank { stringResource(R.string.account_needed) }, size = typo.title) { nav.push(Screen.Account) }
                 TasksCredentialsRows(app, export)
                 Rule(Modifier.padding(vertical = 8.dp))
@@ -388,7 +388,7 @@ fun AccountScreen(nav: Nav, app: App) {
     Page {
         Column(Modifier.fillMaxSize()) {
             ScreenTitle(stringResource(R.string.account), onBack = { nav.pop() })
-            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 12.dp)) {
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 12.dp, bottom = listBottom())) {
                 Small(stringResource(R.string.account_help), Modifier.padding(horizontal = rowPadH), maxLines = 8)
                 AccountField(stringResource(R.string.server), url, { url = it }, "https://sync.infomaniak.com", ImeAction.Next, top = 20.dp)
                 Rule()
