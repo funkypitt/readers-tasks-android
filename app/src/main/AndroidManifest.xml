@@ -26,6 +26,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- The + of the widgets: opens the new-task prompt. -->
+            <intent-filter>
+                <action android:name="com.freedomfighter.readerstasks.ADD" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <receiver android:name=".widget.LineWidget" android:exported="true" android:label="@string/widget_line_name">
